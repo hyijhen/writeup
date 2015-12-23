@@ -7,7 +7,7 @@ But, unlucky for you, your shithead of class mate found a vulnerability inside t
 Fortunately for you, he left his phone unlocked and unattended, which allowed you to forward yourself the email containing the patch for the website, .... end to end encryption out of the window right there....,<br>
 Alright son, get your shit together and let's get cracking<br>
 
-Here is the [patch](https://school.fluxfingers.net/static/chals/patch_953dc87b784435d237b33a4f2fc20612.diff)!
+Here is the [patch](https://school.fluxfingers.net/static/chals/patch_953dc87b784435d237b33a4f2fc20612.diff)!<br>
 And the [Website](https://school.fluxfingers.net:1506/)
 
 The login credentials are:<br>
@@ -22,7 +22,7 @@ The website is divided into two parts: search and login.<br>
 The account for signing in is given in the problem description. After login, the website will ask for token.<br>
 ![github](https://github.com/st9140927/writeup/blob/master/Hack.lu CTF 2015/Grading Board [web] 300/3.png)
 
-After taking a look at the patch file, I saw following sql code:
+After taking a short look at the patch file, I saw following SQL syntax:
 <pre>
 <code>
 select id, first_name, last_name from students
@@ -31,10 +31,10 @@ WHERE first_name='$name'
 </code>
 </pre>
 
-And the blacklist replaced **'**, **"**, **/** and * , So it was possible to use '**#\**' to escape the single quote. The SQL syntax would become:
+And the blacklist replaced **'**, **"**, **/** and **\*** , So it was possible to use '**#\**' to escape the single quote. The SQL syntax would become:
 <pre>
 <code>
-select id, first\_name, last\_name from students
+select id, first_name, last_name from students
             WHERE first_name='<SQLi>#\' OR last_name='<SQLi>#\' ORDER BY id ASC LIMIT 5;
 </code>
 </pre>
