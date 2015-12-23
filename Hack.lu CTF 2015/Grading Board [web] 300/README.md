@@ -31,7 +31,7 @@ WHERE first_name='$name'
 </code>
 </pre>
 
-And the blacklist replaced **'**, **"**, **/** and ***** , So it was possible to use '**#\**' to escape the single quote. The SQL syntax would become:
+And the blacklist replaced **'**, **"**, **/** and * , So it was possible to use '**#\**' to escape the single quote. The SQL syntax would become:
 <pre>
 <code>
 select id, first_name, last_name from students
